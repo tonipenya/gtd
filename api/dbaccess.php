@@ -74,5 +74,16 @@ class DBAccess {
 
         return $result;
     }
+
+    public function deleteProject($id) {
+        $this->open();
+
+        $query = "DELETE FROM project WHERE id = $id";
+        $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+
+        $this->close();
+
+        return $result;
+    }
 }
 ?>

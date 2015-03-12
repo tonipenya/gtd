@@ -1,7 +1,7 @@
 $(function () {
     $('#main').children().hide();
 
-    loadProjects();
+    updateView();
 
     $('#add-project').click(function () {
         showAddProjectForm();
@@ -15,8 +15,12 @@ $(function () {
     $('#task-form').submit(addTask);
 });
 
+function updateView() {
+    loadProjects();
+}
+
 function loadProjects() {
-    $('project-list').children().remove();
+    $('#project-list').children().remove();
     $('form#task-form select').children().remove();
 
     $.getJSON('api/project.php', function (projects) {
@@ -90,10 +94,13 @@ function showProject(project) {
 function deleteProject(id) {
     console.log('deleting ' + id);
     $.ajax({
-        url: 'api/project.php',
+        url: 'api/project.php/' + id,
         type: 'delete',
-        dataType: 'json',
-        data: $('form#project-form').serialize()
+        dataType: 'json'
+     })
+     .success(function () {
+         console.log('deleted');
+         updateView();
      })
      .fail(function (jqXHR, err) {
          console.log(err);
@@ -125,6 +132,9 @@ function addProject(event) {
         dataType: 'json',
         data: $('form#project-form').serialize()
      })
+     .success(function () {
+         updateView();
+     })
      .fail(function (jqXHR, err) {
          console.log(err);
      });
@@ -139,6 +149,9 @@ function addTask(event) {
         type: 'post',
         dataType: 'json',
         data: $('form#task-form').serialize()
+     })
+     .success(function () {
+         updateView();
      })
      .fail(function (jqXHR, err) {
          console.log(err);

@@ -1,6 +1,8 @@
 <?php
 abstract class API {
     public function processRequest() {
+        // $request = $_REQUEST['REQUEST'];
+        $request = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
         switch($method) {
@@ -11,11 +13,16 @@ abstract class API {
                 $this->post();
                 break;
             case "DELETE":
-                $this->delete();
+                $this->delete($this->getId($request));
                 break;
             default:
                 break;
         }
+    }
+
+    private function getId($request) {
+        $args = explode('/', $request);
+        return $args[count($args)-1];
     }
 
     public function get() {

@@ -32,6 +32,17 @@ class ProjectAPI extends API {
             echo json_encode($res);
         }
     }
+
+    public function delete($id) {
+        $dbAccess = new DBAccess();
+        $success = $dbAccess->deleteProject($id);
+
+        if ($success) {
+            $res = array('status' => 'success');
+            http_response_code(201);
+            echo json_encode($res);
+        }
+    }
 }
 
 $projectApi = new ProjectAPI();
