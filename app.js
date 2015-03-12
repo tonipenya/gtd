@@ -32,7 +32,7 @@ function loadProjects() {
 
         loadTasks();
     })
-    .fail(function(jqXHR, err) {
+    .error(function(jqXHR, err) {
         console.log(err);
     });
 }
@@ -44,7 +44,7 @@ function loadTasks(){
             appendTaskToList(task);
         }
     })
-    .fail(function(jqXHR, err) {
+    .error(function(jqXHR, err) {
         console.log(err);
     });
 }
@@ -86,7 +86,7 @@ function appendProjectToTaskForm(project) {
 function showProject(project) {
     $('#main').children().hide();
     $('#project-view').show();
-    $('#project-view h2').html(project.title);
+    $('#project-view h3').html(project.title);
     $('#project-view p').html(project.description);
 
 }
@@ -102,7 +102,7 @@ function deleteProject(id) {
          console.log('deleted');
          updateView();
      })
-     .fail(function (jqXHR, err) {
+     .error(function (jqXHR, err) {
          console.log(err);
      });
 }
@@ -110,7 +110,7 @@ function deleteProject(id) {
 function showTask(task) {
     $('#main').children().hide();
     $('#task-view').show();
-    $('#task-view h2').html(task.title);
+    $('#task-view h3').html(task.title);
 }
 
 function showAddProjectForm() {
@@ -135,8 +135,11 @@ function addProject(event) {
      .success(function () {
          updateView();
      })
-     .fail(function (jqXHR, err) {
+     .error(function (jqXHR, err) {
          console.log(err);
+     })
+     .complete(function () {
+         $('form#project-form input[type=text]').val('');
      });
 
 }
@@ -153,8 +156,11 @@ function addTask(event) {
      .success(function () {
          updateView();
      })
-     .fail(function (jqXHR, err) {
+     .error(function (jqXHR, err) {
          console.log(err);
+     })
+     .complete(function () {
+         $('form#task-form input[type=text]').val('');
      });
 
 }
