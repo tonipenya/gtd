@@ -1,8 +1,12 @@
 <?php
-
 abstract class API {
+    protected $args;
+
+    public function __construct($args) {
+        $this->args = $args;
+    }
+
     public function processRequest() {
-        $request = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
         switch($method) {
@@ -16,16 +20,11 @@ abstract class API {
                 $this->put();
                 break;
             case "DELETE":
-                $this->delete($this->getId($request));
+                $this->delete();
                 break;
             default:
                 break;
         }
-    }
-
-    private function getId($request) {
-        $args = explode('/', $request);
-        return $args[count($args)-1];
     }
 
     public function get() {
@@ -43,10 +42,9 @@ abstract class API {
         echo json_encode(array('message' => 'operation not available'));
     }
 
-    public function delete($id) {
+    public function delete() {
         http_response_code(501);
         echo json_encode(array('message' => 'operation not available'));
     }
 }
-
 ?>

@@ -24,7 +24,7 @@ function loadProjects() {
     $('#project-list').children().remove();
     $('form#task-form select').children().remove();
 
-    $.getJSON('api/project.php', function (projects) {
+    $.getJSON('api.php/project', function (projects) {
         for (var i in projects) {
             var project = projects[i];
             appendProjectToList(project);
@@ -39,7 +39,7 @@ function loadProjects() {
 }
 
 function loadTasks(){
-    $.getJSON('api/task.php', function (tasks) {
+    $.getJSON('api.php/task', function (tasks) {
         for (var i in tasks) {
             var task = tasks[i];
             appendTaskToList(task);
@@ -92,21 +92,18 @@ function appendProjectToTaskForm(project) {
 
 function showProject(project) {
     $('#main').children().hide();
-    $('#project-view').show();
     $('#project-view h3').html(project.title);
     $('#project-view p').html(project.description);
-
+    $('#project-view').show();
 }
 
 function deleteProject(id) {
-    console.log('deleting ' + id);
     $.ajax({
-        url: 'api/project.php/' + id,
+        url: 'api.php/project/' + id,
         type: 'delete',
         dataType: 'json'
      })
      .success(function () {
-         console.log('deleted');
          updateView();
      })
      .error(function (jqXHR, err) {
@@ -123,8 +120,9 @@ function editProject(project) {
 
 function showTask(task) {
     $('#main').children().hide();
-    $('#task-view').show();
     $('#task-view h3').html(task.title);
+    $('#task-view p').html(task.description);
+    $('#task-view').show();
 }
 
 function showAddProjectForm() {
@@ -143,7 +141,7 @@ function addProject(event) {
     var method = $('#project-id').val()? 'put' : 'post';
 
     $.ajax({
-        url: 'api/project.php',
+        url: 'api.php/project',
         type: method,
         dataType: 'json',
         data: $('form#project-form').serialize()
@@ -163,7 +161,7 @@ function addTask(event) {
     event.preventDefault();
 
     $.ajax({
-        url: 'api/task.php',
+        url: 'api.php/task',
         type: 'post',
         dataType: 'json',
         data: $('form#task-form').serialize()

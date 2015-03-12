@@ -1,5 +1,4 @@
 <?php
-
 class DBAccess {
     private $host =  'localhost';
     private $db = 'gtd';

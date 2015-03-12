@@ -16,3 +16,7 @@ CREATE TABLE IF NOT EXISTS task (
   FOREIGN KEY fk_id_project(id_project) REFERENCES project(id)
   ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+
+
+-- INSERT INTO `gtd`.`project` (`id`, `title`, `description`) VALUES (NULL, 'a project', 'a project''s description');
