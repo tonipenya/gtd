@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>GTD in php!</title>
+    <script src="lib/jquery-1.11.2.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <ul id="project-list">
+    </ul>
+    <p id="add-project">
+      Add project
+    </p>
+    <p id="add-task">
+      Add task
+    </p>
+
+    <div id="main">
+      <div id="project-form-container">
+        <h2>New project</h2>
+        <form id="project-form" action="api/project.php" method="post">
+          <label for="project-title">Title</label>
+          <input id="project-title" name="title" type="text"></input>
+          <label for="project-desc">description</label>
+          <input id="project-desc" name="desc" type="text"></input>
+          <input type="submit"></input>
+        </form>
+      </div>
+
+      <div id="task-form-container">
+        <h2>New task</h2>
+        <form id="task-form" action="api/task.php" method="post">
+          <label for="task-title">Title</label>
+          <input id="task-title" name="title" type="text"></input>
+          <label for="project">Project</label>
+          <select id="project" name="project-id"></select>
+          <label for="task-desc">description</label>
+          <input id="task-desc" name="desc" type="text"></input>
+          <input type="submit"></input>
+        </form>
+      </div>
+
+      <div id="project-view">
+        <h2>xx project</h2>
+        <p>
+          xx project
+        </p>
+      </div>
+
+      <div id="task-view">
+        <h2>xx class</h2>
+        <p>
+          xx class
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
