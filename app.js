@@ -72,7 +72,6 @@ function appendTaskToList(task) {
 }
 
 function appendProjectToTaskForm(project) {
-    console.log('appending');
     $('form#task-form select').append(
         '<option value="' + project.id + '">'
         +   project.title

@@ -1,5 +1,6 @@
 <?php
 include 'dbaccess.php';
+include 'api.php';
 
 class Project {
     public $id;
@@ -13,34 +14,27 @@ class Project {
     }
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
+class ProjectAPI extends API {
+    public function get() {
+        $dbAccess = new DBAccess();
+        $projects = $dbAccess->getProjects();
+        http_response_code(200);
+        echo json_encode($projects);
+    }
 
-switch($method) {
-    case "GET":
-        get();
-        break;
-    case "POST":
-        post();
-        break;
-    default:
-        break;
-}
+    public function post() {
+        $dbAccess = new DBAccess();
+        $success = $dbAccess->addProject($_POST['title'], $_POST['desc']);
 
-function get() {
-    $dbAccess = new DBAccess();
-    $projects = $dbAccess->getProjects();
-    echo json_encode($projects);
-}
-
-function post() {
-    $dbAccess = new DBAccess();
-    $success = $dbAccess->addProject($_POST['title'], $_POST['desc']);
-
-    if ($success) {
-        $res = array('status' => 'success');
-        echo json_encode($res);
+        if ($success) {
+            $res = array('status' => 'success');
+            http_response_code(201);
+            echo json_encode($res);
+        }
     }
 }
 
+$projectApi = new ProjectAPI();
+$projectApi->processRequest();
 
 ?>

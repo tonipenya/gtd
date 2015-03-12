@@ -1,5 +1,6 @@
 <?php
 include 'dbaccess.php';
+include 'api.php';
 
 class Task {
     public $id;
@@ -14,35 +15,29 @@ class Task {
 }
 
 
-$method = $_SERVER['REQUEST_METHOD'];
+class TaskAPI extends API {
+    public function get() {
+        $dbAccess = new DBAccess();
+        $tasks = $dbAccess->getTasks();
 
-switch($method) {
-    case "GET":
-        get();
-        break;
-    case "POST":
-        post();
-        break;
-    default:
-        break;
-}
+        http_response_code(200);
+        echo json_encode($tasks);
+    }
 
-function get() {
-    $dbAccess = new DBAccess();
-    $tasks = $dbAccess->getTasks();
+    public function post() {
+        $dbAccess = new DBAccess();
+        $success = $dbAccess->addTask($_POST['title'], $_POST['project-id'], $_POST['desc']);
 
-    echo json_encode($tasks);
-}
-
-function post() {
-    $dbAccess = new DBAccess();
-    $success = $dbAccess->addTask($_POST['title'], $_POST['project-id'], $_POST['desc']);
-
-    if ($success) {
-        $res = array('status' => 'success');
-        echo json_encode($res);
+        if ($success) {
+            $res = array('status' => 'success');
+            http_response_code(201);
+            echo json_encode($res);
+        }
     }
 }
+
+$taskApi = new TaskAPI();
+$taskApi->processRequest();
 
 
 ?>
