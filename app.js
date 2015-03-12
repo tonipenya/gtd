@@ -4,6 +4,7 @@ $(function () {
     updateView();
 
     $('#add-project').click(function () {
+        clearProjectForm();
         showAddProjectForm();
     });
 
@@ -53,16 +54,22 @@ function appendProjectToList(project) {
     $('#project-list').append(
         '<li id="project' + project.id +'">'
         +   project.title
-        +   '<a href="#" >-</a>'
+        +   ' <a href="#" data-action="delete">delete</a>'
+        +   ' <a href="#" data-action="edit">edit</a>'
         +'</li>');
 
     $('#project' + project.id).click(function () {
         showProject(project);
     });
 
-    $('#project' + project.id + " a").click(function (event) {
+    $('#project' + project.id + " a[data-action=delete]").click(function (event) {
         event.stopPropagation();
         deleteProject(project.id);
+    });
+
+    $('#project' + project.id + " a[data-action=edit]").click(function (event) {
+        event.stopPropagation();
+        editProject(project);
     });
 }
 
@@ -107,6 +114,13 @@ function deleteProject(id) {
      });
 }
 
+function editProject(project) {
+    $('#project-id').val(project.id);
+    $('#project-title').val(project.title);
+    $('#project-desc').val(project.description);
+    showAddProjectForm();
+}
+
 function showTask(task) {
     $('#main').children().hide();
     $('#task-view').show();
@@ -126,9 +140,11 @@ function showAddTaskForm() {
 function addProject(event) {
     event.preventDefault();
 
+    var method = $('#project-id').val()? 'put' : 'post';
+
     $.ajax({
         url: 'api/project.php',
-        type: 'post',
+        type: method,
         dataType: 'json',
         data: $('form#project-form').serialize()
      })
@@ -139,9 +155,8 @@ function addProject(event) {
          console.log(err);
      })
      .complete(function () {
-         $('form#project-form input[type=text]').val('');
+         clearProjectForm();
      });
-
 }
 
 function addTask(event) {
@@ -161,6 +176,11 @@ function addTask(event) {
      })
      .complete(function () {
          $('form#task-form input[type=text]').val('');
+         $('form#project-form input[type=hidden]').val('');
      });
+}
 
+function clearProjectForm() {
+    $('form#project-form input[type=text]').val('');
+    $('form#project-form input[type=hidden]').val('');
 }

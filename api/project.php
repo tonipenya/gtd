@@ -33,6 +33,19 @@ class ProjectAPI extends API {
         }
     }
 
+    public function put() {
+        parse_str(file_get_contents("php://input"),$put_vars);
+        $dbAccess = new DBAccess();
+        $project = new Project($put_vars['id'], $put_vars['title'], $put_vars['desc']);
+        $success = $dbAccess->updateProject($project);
+
+        if ($success) {
+            $res = array('status' => 'success');
+            http_response_code(201);
+            echo json_encode($res);
+        }
+    }
+
     public function delete($id) {
         $dbAccess = new DBAccess();
         $success = $dbAccess->deleteProject($id);

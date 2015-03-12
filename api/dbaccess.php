@@ -1,4 +1,5 @@
 <?php
+
 class DBAccess {
     private $host =  'localhost';
     private $db = 'gtd';
@@ -68,6 +69,17 @@ class DBAccess {
         $this->open();
 
         $query = "INSERT INTO task (title, id_project, description) VALUES ('$title', $projectId, '$description')";
+        $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+
+        $this->close();
+
+        return $result;
+    }
+
+    public function updateProject($project) {
+        $this->open();
+
+        $query = "UPDATE project SET title='$project->title', description='$project->description' WHERE id='$project->id'";
         $result = mysql_query($query) or die('Query failed: ' . mysql_error());
 
         $this->close();

@@ -1,7 +1,7 @@
 <?php
+
 abstract class API {
     public function processRequest() {
-        // $request = $_REQUEST['REQUEST'];
         $request = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -11,6 +11,9 @@ abstract class API {
                 break;
             case "POST":
                 $this->post();
+                break;
+            case "PUT":
+                $this->put();
                 break;
             case "DELETE":
                 $this->delete($this->getId($request));
@@ -35,7 +38,12 @@ abstract class API {
         echo json_encode(array('message' => 'operation not available'));
     }
 
-    public function delete() {
+    public function put() {
+        http_response_code(501);
+        echo json_encode(array('message' => 'operation not available'));
+    }
+
+    public function delete($id) {
         http_response_code(501);
         echo json_encode(array('message' => 'operation not available'));
     }
